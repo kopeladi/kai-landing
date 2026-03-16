@@ -1357,7 +1357,7 @@
     .type-line--1 { animation: typeLineIn 0.4s 0.4s ease both; }
     .type-line--2 { animation: typeLineIn 0.4s 1.0s ease both; }
     .type-line--3 { animation: typeLineIn 0.4s 1.7s ease both; }
-    .type-line--4 { animation: typeLineIn 0.4s 2.4s ease both; }
+    .type-line--4 { opacity: 0; animation: typeLineIn 0.4s 2.4s ease forwards; }
     .type-line--5 { animation: typeLineIn 0.4s 3.0s ease both; }
 
     @keyframes typeLineIn {
@@ -1866,7 +1866,7 @@
               <div class="type-line type-line--emoji type-line--1">🔥</div>
               <div class="type-line type-line--title type-line--2">מחפשים מתנה לגבר שיש לו הכל?</div>
               <div class="type-line type-line--body type-line--3">98% מהגברים אמרו שזו הכי טובה שקיבלו — ואנחנו לא מוכרים סתם קופסה.</div>
-              <div class="type-line type-line--body type-line--4">אנחנו מוכרים תחושה. 🎁<span class="content-type-cursor"></span></div>
+              <div class="type-line type-line--body type-line--4"><span id="blog-typewriter"></span><span class="content-type-cursor"></span></div>
               <div class="type-line type-line--tag type-line--5">#מתנותלגבר &nbsp;#ויראלי &nbsp;#ManBoxIL</div>
             </div>
           </div>
@@ -2121,6 +2121,23 @@
   }, { threshold: 0.15 });
   const howStepsEl = document.getElementById('how-steps');
   if (howStepsEl) howStepsObserver.observe(howStepsEl);
+
+  // Blog post typewriter loop
+  const blogTypeEl = document.getElementById('blog-typewriter');
+  if (blogTypeEl) {
+    const text = 'אנחנו מוכרים תחושה. 🎁';
+    let i = 0;
+    function typeBlog() {
+      if (i <= text.length) {
+        blogTypeEl.textContent = text.slice(0, i);
+        i++;
+        setTimeout(typeBlog, 65);
+      } else {
+        setTimeout(() => { i = 0; setTimeout(typeBlog, 400); }, 2200);
+      }
+    }
+    setTimeout(typeBlog, 2900); // מתחיל אחרי שהשורות האחרות הופיעו
+  }
 
   // Product card selection
   const productsGrid = document.querySelector('.products-grid');
