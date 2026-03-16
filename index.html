@@ -290,90 +290,73 @@
       font-size: 0.9rem;
     }
 
-    /* ─── HOW IT WORKS STEPS ────────────────────── */
-    /* ─── HOW IT WORKS STEPS ────────────────────── */
-    @keyframes stepFadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes arrowFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    .how-steps {
-      display: flex;
-      align-items: stretch;
-      gap: 8px;
-      margin-bottom: 0;
-    }
-
-    .how-step {
-      flex: 1;
-      border-radius: var(--radius-lg);
-      padding: 20px 18px;
+    /* ─── HOW IT WORKS — VERTICAL TIMELINE ─────── */
+    .process-timeline {
+      max-width: 480px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 6px;
+    }
+
+    .ptimeline-step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
       position: relative;
+      padding-bottom: 40px;
       opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    .how-step.step-visible {
-      animation: stepFadeUp 0.5s ease forwards;
+    .ptimeline-step:last-child { padding-bottom: 0; }
+
+    .ptimeline-step.step-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .how-step--1 { background: #EEF9F5; }
-    .how-step--2 { background: #F2F0FF; }
-    .how-step--3 { background: #F0F7FF; }
-
-    .how-step__num {
+    /* vertical connecting line */
+    .ptimeline-step:not(:last-child)::before {
+      content: '';
       position: absolute;
-      top: -14px;
-      width: 28px; height: 28px;
+      top: 52px;
+      right: 25px;
+      width: 2px;
+      bottom: 0;
+      background: linear-gradient(to bottom, var(--neon-border) 60%, transparent);
+    }
+
+    .ptimeline-dot {
+      width: 52px; height: 52px;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: #fff;
       background: var(--neon);
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 6px var(--neon-soft);
     }
 
-    .how-step__icon {
-      font-size: 1.3rem;
-      margin-top: 6px;
+    .ptimeline-content {
+      padding-top: 10px;
+      flex: 1;
     }
 
-    .how-step__title {
-      font-size: 0.88rem;
+    .ptimeline-content h3 {
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--text);
+      margin-bottom: 6px;
       line-height: 1.3;
     }
 
-    .how-step__desc {
-      font-size: 0.78rem;
+    .ptimeline-content p {
+      font-size: 0.95rem;
       color: var(--text-mid);
-      line-height: 1.55;
-    }
-
-    .how-arrow {
-      font-size: 1.2rem;
-      color: var(--text-soft);
-      flex-shrink: 0;
-      opacity: 0;
-      align-self: center;
-    }
-
-    .how-arrow.step-visible {
-      animation: arrowFadeIn 0.4s ease forwards;
-    }
-
-    @media (max-width: 720px) {
-      .how-steps { flex-direction: column; }
-      .how-arrow { transform: rotate(90deg); }
+      line-height: 1.6;
     }
 
     .products-intro-title {
@@ -1722,26 +1705,27 @@
   <div class="container">
     <h2 class="section__title fade-in" style="margin-bottom: 40px;">איך נראה תהליך העבודה?</h2>
 
-    <div class="how-steps" id="how-steps">
-      <div class="how-step how-step--1">
-        <div class="how-step__num">1</div>
-        <div class="how-step__icon">🔍</div>
-        <h3 class="how-step__title">שיחת אפיון</h3>
-        <p class="how-step__desc">מספרים לי מה צריך, בשפה פשוטה</p>
+    <div class="process-timeline" id="how-steps">
+      <div class="ptimeline-step">
+        <div class="ptimeline-dot">1</div>
+        <div class="ptimeline-content">
+          <h3>שיחת אפיון</h3>
+          <p>מספרים לי מה צריך, בשפה פשוטה</p>
+        </div>
       </div>
-      <span class="how-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;transform:none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <div class="how-step how-step--2">
-        <div class="how-step__num">2</div>
-        <div class="how-step__icon">⚡</div>
-        <h3 class="how-step__title">דמו תוך 24 שעות</h3>
-        <p class="how-step__desc">אני בונה ומדגימה, עושים כמה סבבי תיקונים</p>
+      <div class="ptimeline-step">
+        <div class="ptimeline-dot">2</div>
+        <div class="ptimeline-content">
+          <h3>דמו תוך 24 שעות</h3>
+          <p>אני בונה ומדגימה, עושים כמה סבבי תיקונים</p>
+        </div>
       </div>
-      <span class="how-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;transform:none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <div class="how-step how-step--3">
-        <div class="how-step__num">3</div>
-        <div class="how-step__icon">✅</div>
-        <h3 class="how-step__title">מוצר עובד אצלך</h3>
-        <p class="how-step__desc">מסמכי אפיון וקוד מקור אצלך</p>
+      <div class="ptimeline-step">
+        <div class="ptimeline-dot">3</div>
+        <div class="ptimeline-content">
+          <h3>מוצר עובד אצלך</h3>
+          <p>מסמכי אפיון וקוד מקור אצלך</p>
+        </div>
       </div>
     </div>
 
@@ -2093,22 +2077,17 @@
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-  // How-it-works staggered animation
+  // How-it-works staggered timeline animation
   const howStepsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const steps = entry.target.querySelectorAll('.how-step');
-        const arrows = entry.target.querySelectorAll('.how-arrow');
-        steps.forEach((step, i) => {
-          setTimeout(() => step.classList.add('step-visible'), i * 220);
-        });
-        arrows.forEach((arrow, i) => {
-          setTimeout(() => arrow.classList.add('step-visible'), 110 + i * 220);
+        entry.target.querySelectorAll('.ptimeline-step').forEach((step, i) => {
+          setTimeout(() => step.classList.add('step-visible'), i * 250);
         });
         howStepsObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.15 });
   const howStepsEl = document.getElementById('how-steps');
   if (howStepsEl) howStepsObserver.observe(howStepsEl);
 
