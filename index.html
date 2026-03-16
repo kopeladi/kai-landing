@@ -279,9 +279,19 @@
     }
 
     /* ─── HOW IT WORKS STEPS ────────────────────── */
+    /* ─── HOW IT WORKS STEPS ────────────────────── */
+    @keyframes stepFadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes arrowFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
     .how-steps {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       gap: 8px;
       margin-bottom: 0;
     }
@@ -296,6 +306,11 @@
       text-align: center;
       gap: 6px;
       position: relative;
+      opacity: 0;
+    }
+
+    .how-step.step-visible {
+      animation: stepFadeUp 0.5s ease forwards;
     }
 
     .how-step--1 { background: #EEF9F5; }
@@ -311,11 +326,8 @@
       font-size: 0.78rem;
       font-weight: 800;
       color: #fff;
+      background: var(--neon);
     }
-
-    .how-step--1 .how-step__num { background: #00C98D; }
-    .how-step--2 .how-step__num { background: var(--neon); }
-    .how-step--3 .how-step__num { background: #4285F4; }
 
     .how-step__icon {
       font-size: 1.3rem;
@@ -339,6 +351,12 @@
       font-size: 1.2rem;
       color: var(--text-soft);
       flex-shrink: 0;
+      opacity: 0;
+      align-self: center;
+    }
+
+    .how-arrow.step-visible {
+      animation: arrowFadeIn 0.4s ease forwards;
     }
 
     @media (max-width: 720px) {
@@ -1692,25 +1710,25 @@
   <div class="container">
     <h2 class="section__title fade-in" style="margin-bottom: 40px;">איך נראה תהליך העבודה?</h2>
 
-    <div class="how-steps fade-in">
+    <div class="how-steps" id="how-steps">
       <div class="how-step how-step--1">
         <div class="how-step__num">1</div>
         <div class="how-step__icon">🔍</div>
         <h3 class="how-step__title">שיחת אפיון</h3>
-        <p class="how-step__desc">מספרים לי מה צריך — שיחה קצרה, בלי עלות</p>
+        <p class="how-step__desc">מספרים לי מה צריך, בשפה פשוטה</p>
       </div>
-      <span class="how-arrow">←</span>
+      <span class="how-arrow">→</span>
       <div class="how-step how-step--2">
         <div class="how-step__num">2</div>
         <div class="how-step__icon">⚡</div>
         <h3 class="how-step__title">דמו תוך 24 שעות</h3>
-        <p class="how-step__desc">אני בונה ומדגימה — עושים כמה סבבי תיקונים</p>
+        <p class="how-step__desc">אני בונה ומדגימה, עושים כמה סבבי תיקונים</p>
       </div>
-      <span class="how-arrow">←</span>
+      <span class="how-arrow">→</span>
       <div class="how-step how-step--3">
         <div class="how-step__num">3</div>
         <div class="how-step__icon">✅</div>
-        <h3 class="how-step__title">מוצר שעובד אצלך</h3>
+        <h3 class="how-step__title">מוצר עובד אצלך</h3>
         <p class="how-step__desc">מסמכי אפיון וקוד מקור אצלך</p>
       </div>
     </div>
@@ -2062,6 +2080,25 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // How-it-works staggered animation
+  const howStepsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const steps = entry.target.querySelectorAll('.how-step');
+        const arrows = entry.target.querySelectorAll('.how-arrow');
+        steps.forEach((step, i) => {
+          setTimeout(() => step.classList.add('step-visible'), i * 220);
+        });
+        arrows.forEach((arrow, i) => {
+          setTimeout(() => arrow.classList.add('step-visible'), 110 + i * 220);
+        });
+        howStepsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  const howStepsEl = document.getElementById('how-steps');
+  if (howStepsEl) howStepsObserver.observe(howStepsEl);
 
   // Results slider
   let currentSlide = 0;
