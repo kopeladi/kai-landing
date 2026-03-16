@@ -359,61 +359,43 @@
       line-height: 1.6;
     }
 
-    /* ─── PRODUCT TABS ───────────────────────────── */
-    .products-tabs-wrap {
-      margin-top: 64px;
-      margin-bottom: 32px;
-    }
-
+    /* ─── PRODUCT SECTION TITLE ─────────────────── */
     .products-intro-title {
       font-size: 1.5rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--text);
-      margin-bottom: 20px;
-    }
-
-    .products-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .ptab {
-      padding: 8px 18px;
-      border-radius: 50px;
-      background: var(--surface);
-      border: 1.5px solid rgba(0,0,0,0.08);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-mid);
-      cursor: pointer;
-      transition: all 0.18s;
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .ptab:hover { border-color: var(--neon-border); color: var(--neon); background: var(--neon-soft); }
-
-    .ptab.active {
-      background: var(--neon-soft);
-      border-color: var(--neon-border);
-      color: var(--neon);
-      font-weight: 700;
-    }
-
-    .pcard.pcard--highlight {
-      outline: 2.5px solid var(--neon);
-      outline-offset: 2px;
-    }
-
-    .products-intro-title-old {
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
       margin-top: 64px;
-      margin-bottom: 24px;
+      margin-bottom: 8px;
+    }
+
+    .products-intro-hint {
+      font-size: 0.88rem;
+      color: var(--text-soft);
+      margin-bottom: 28px;
+    }
+
+    /* ─── CARD SELECTION STATES ──────────────────── */
+    .pcard {
+      cursor: pointer;
+    }
+
+    .products-grid.has-selection .pcard {
+      opacity: 0.42;
+      transform: none !important;
+      box-shadow: none;
+      transition: opacity 0.25s, transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+
+    .products-grid.has-selection .pcard--selected {
+      opacity: 1;
+      border-color: var(--neon);
+      box-shadow: 0 0 0 4px var(--neon-soft), 0 16px 48px rgba(91,79,255,0.16);
+      transform: translateY(-6px) scale(1.015) !important;
+    }
+
+    .products-grid.has-selection .pcard:not(.pcard--selected):hover {
+      opacity: 0.72;
     }
 
     /* ─── GUARANTEE BAR ─────────────────────────── */
@@ -1777,15 +1759,8 @@
       </div>
     </div>
 
-    <div class="products-tabs-wrap fade-in">
-      <h3 class="products-intro-title">מאיזה מוצר נתחיל?</h3>
-      <div class="products-tabs" id="productTabs">
-        <button class="ptab active" data-target="pcard-landing">🏆 עמוד נחיתה</button>
-        <button class="ptab" data-target="pcard-chatbot">🤖 בוט וואטסאפ</button>
-        <button class="ptab" data-target="pcard-content">✍️ כותב פוסטים</button>
-        <button class="ptab" data-target="pcard-data">📊 הזנת נתונים</button>
-      </div>
-    </div>
+    <h3 class="products-intro-title fade-in">מאיזה מוצר נתחיל?</h3>
+    <p class="products-intro-hint fade-in">לחצו על מוצר לפרטים</p>
 
     <div class="products-grid">
 
@@ -2147,21 +2122,21 @@
   const howStepsEl = document.getElementById('how-steps');
   if (howStepsEl) howStepsObserver.observe(howStepsEl);
 
-  // Product tabs
-  const tabsEl = document.getElementById('productTabs');
-  if (tabsEl) {
-    tabsEl.addEventListener('click', e => {
-      const tab = e.target.closest('.ptab');
-      if (!tab) return;
-      tabsEl.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const target = document.getElementById(tab.dataset.target);
-      if (target) {
-        document.querySelectorAll('.pcard').forEach(c => c.classList.remove('pcard--highlight'));
-        target.classList.add('pcard--highlight');
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(() => target.classList.remove('pcard--highlight'), 1800);
+  // Product card selection
+  const productsGrid = document.querySelector('.products-grid');
+  if (productsGrid) {
+    productsGrid.addEventListener('click', e => {
+      const card = e.target.closest('.pcard');
+      if (!card) return;
+      // if already selected — deselect
+      if (card.classList.contains('pcard--selected')) {
+        card.classList.remove('pcard--selected');
+        productsGrid.classList.remove('has-selection');
+        return;
       }
+      productsGrid.querySelectorAll('.pcard').forEach(c => c.classList.remove('pcard--selected'));
+      card.classList.add('pcard--selected');
+      productsGrid.classList.add('has-selection');
     });
   }
 
