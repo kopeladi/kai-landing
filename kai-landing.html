@@ -1258,14 +1258,24 @@
 
     .footer__logo {
       font-family: 'Space Mono', monospace;
-      font-size: 1.1rem;
+      font-size: 1.55rem;
       font-weight: 700;
       color: #fff;
       margin-bottom: 12px;
-      display: inline-block;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.1;
+      gap: 1px;
     }
 
-    .footer__logo span { color: var(--neon-mid); }
+    .footer__logo-sub {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--neon-mid);
+      letter-spacing: 0.06em;
+      font-family: 'Space Mono', monospace;
+    }
 
     .footer__copy { font-size: 0.85rem; color: rgba(255,255,255,0.35); }
 
@@ -2090,7 +2100,7 @@
 <!-- ─── FOOTER ─── -->
 <footer class="footer">
   <div class="container">
-    <div class="footer__logo">K.A.I <span>●</span> Kopel.AI</div>
+    <div class="footer__logo">K.A.I<small class="footer__logo-sub">by Kopel.AI</small></div>
     <p class="footer__copy">© 2026 K.A.I (Kopel.AI) · כל הזכויות שמורות</p>
   </div>
 </footer>
