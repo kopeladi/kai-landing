@@ -359,7 +359,55 @@
       line-height: 1.6;
     }
 
+    /* ─── PRODUCT TABS ───────────────────────────── */
+    .products-tabs-wrap {
+      margin-top: 64px;
+      margin-bottom: 32px;
+    }
+
     .products-intro-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .products-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ptab {
+      padding: 8px 18px;
+      border-radius: 50px;
+      background: var(--surface);
+      border: 1.5px solid rgba(0,0,0,0.08);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.18s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .ptab:hover { border-color: var(--neon-border); color: var(--neon); background: var(--neon-soft); }
+
+    .ptab.active {
+      background: var(--neon-soft);
+      border-color: var(--neon-border);
+      color: var(--neon);
+      font-weight: 700;
+    }
+
+    .pcard.pcard--highlight {
+      outline: 2.5px solid var(--neon);
+      outline-offset: 2px;
+    }
+
+    .products-intro-title-old {
       font-size: 1.5rem;
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -1729,12 +1777,20 @@
       </div>
     </div>
 
-    <h3 class="products-intro-title fade-in">מאיזה מוצר נתחיל?</h3>
+    <div class="products-tabs-wrap fade-in">
+      <h3 class="products-intro-title">מאיזה מוצר נתחיל?</h3>
+      <div class="products-tabs" id="productTabs">
+        <button class="ptab active" data-target="pcard-landing">🏆 עמוד נחיתה</button>
+        <button class="ptab" data-target="pcard-chatbot">🤖 בוט וואטסאפ</button>
+        <button class="ptab" data-target="pcard-content">✍️ כותב פוסטים</button>
+        <button class="ptab" data-target="pcard-data">📊 הזנת נתונים</button>
+      </div>
+    </div>
 
     <div class="products-grid">
 
       <!-- Card 1: Landing Page -->
-      <div class="pcard fade-in">
+      <div class="pcard fade-in" id="pcard-landing">
         <div class="pcard__header">
           <h3 class="pcard__title">עמוד נחיתה מנצח</h3>
           <span class="pcard__badge pcard__badge--hot">🔥 הכי פופולרי</span>
@@ -1769,7 +1825,7 @@
       </div>
 
       <!-- Card 2: Chatbot -->
-      <div class="pcard fade-in">
+      <div class="pcard fade-in" id="pcard-chatbot">
         <div class="pcard__header">
           <h3 class="pcard__title">בוט וואטסאפ / אינסטגרם</h3>
           <span class="pcard__badge pcard__badge--new">⚡ חוסך שעות</span>
@@ -1817,7 +1873,7 @@
       </div>
 
       <!-- Card 3: Content Machine -->
-      <div class="pcard fade-in">
+      <div class="pcard fade-in" id="pcard-content">
         <div class="pcard__header">
           <h3 class="pcard__title">כותב הפוסטים האישי</h3>
           <span class="pcard__badge pcard__badge--rec">✨ המומלץ ביותר</span>
@@ -1863,7 +1919,7 @@
       </div>
 
       <!-- Card 4: Park Log / Data Entry -->
-      <div class="pcard fade-in">
+      <div class="pcard fade-in" id="pcard-data">
         <div class="pcard__header">
           <h3 class="pcard__title">מערכת הזנת נתונים</h3>
           <span class="pcard__badge pcard__badge--gsuite">🎯 פשוט לתפעול</span>
@@ -2090,6 +2146,24 @@
   }, { threshold: 0.15 });
   const howStepsEl = document.getElementById('how-steps');
   if (howStepsEl) howStepsObserver.observe(howStepsEl);
+
+  // Product tabs
+  const tabsEl = document.getElementById('productTabs');
+  if (tabsEl) {
+    tabsEl.addEventListener('click', e => {
+      const tab = e.target.closest('.ptab');
+      if (!tab) return;
+      tabsEl.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = document.getElementById(tab.dataset.target);
+      if (target) {
+        document.querySelectorAll('.pcard').forEach(c => c.classList.remove('pcard--highlight'));
+        target.classList.add('pcard--highlight');
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => target.classList.remove('pcard--highlight'), 1800);
+      }
+    });
+  }
 
   // Results slider
   let currentSlide = 0;
